@@ -3,9 +3,20 @@ import styles from './page.module.css';
 import { getMeal } from '@/lib/meals';
 import { notFound } from 'next/navigation';
 
-export default function MealsItem({params}) {
+export async function generateMetadata({params}) {
+    const meal = getMeal(params.slug)
 
-    console.log(params);
+    if(!meal) {
+        notFound();
+    }
+
+    return {
+        title: meal.slug,
+        description: meal.summary,
+    }
+}
+
+export default function MealsItem({params}) {
 
     const meal = getMeal(params.slug);
 
